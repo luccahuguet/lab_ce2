@@ -1,7 +1,6 @@
 # The following code will calculate the theorical predictions of the signals of the circuit
 
 calc_pararel(n1, n2) = round((n1 * n2) / (n1 + n2), digits=4)
-calc_omega(f) = round(2 * pi * f, digits=2)
 calc_XL(L, f) = round(complex(0, 2 * pi * f * L), digits=4)
 calc_XC(C, f) = round(complex(1, 0) / complex(0, 2 * pi * f * C), digits=4)
 function calc_Z(r, f, L, C)
@@ -19,7 +18,8 @@ end
 calc_vrms(v_pico) = round(v_pico / sqrt(2), digits=4)
 freqcorte(R, C) = 1 / (R * C * 2 * pi)
 # ganho(vo, vi) = 20 * log10(vo / vi)
-ganho(R, C, f) = -20 * log10(h_calc(R, C, f))
+calc_omega(f) = round(2 * pi * f, digits=2)
+gain(R, C, f) = -20 * log10(h_calc(R, C, f))
 h_calc(R, C, f) = 1 / abs(1 + (R * C * calc_omega(f) * 1im))
 
 function print_all(L, C, R, f, v_pico, phase)

@@ -1,7 +1,5 @@
 
-include("functions.jl")
 println("running playground! \n")
-using DataFrames
 
 
 # function calc_Z_(r, f, L)
@@ -33,40 +31,24 @@ using DataFrames
 # println("pot_apar = ", pot_apar, " = ", polar_string(pot_apar))
 # println("z_total = ", z_total, " = ", polar_string(z_total))
 
-vi = 2 # vpp
+vi = 4 # vpp
+
+include("functions.jl")
+using DataFrames
 R = 3700
 C = 1e-9
 
-fvec = cat(4400, 5e3:1e3:10e3, 20e3:10e3:100e3, 200e3:100e3:400e3, 440e3, dims=1)
+freq_array = cat(4400, 5e3:1e3:10e3, 20e3:10e3:100e3, 200e3:100e3:400e3, 440e3, dims=1)
+h_array = h_calc.(R, C, freq_array)
+gain_array = gain.(R, C, freq_array)
 
+df = DataFrame(Frequency=freq_array, H=h_array, Gain=gain_array)
 
-# for el in fvec
-#   println(el)
-# end
+print(df)
 
-f_corte = freqcorte(R, C)
+img = R * C * calc_omega(freq_array[1]) * 1im - 1
 
-println("freq de corte =", f_corte)
+freqcorte(R, C) = 1 / (R * C * 2 * pi)
+print("\n\n Cutoff frequency: ", round(freqcorte(R, C), digits=2), " Hz")
 
-h = h_calc(R, C, fvec[1])
-hvec = h_calc.(R, C, fvec)
-ganhovec = ganho.(R, C, fvec)
-
-println(" f \t\t\t|\t\t\tH(jw)\t\t\t|\t\t\tGanho")
-
-for (idx, each_h) in enumerate(hvec)
-  println(fvec[idx], "\t|\t", each_h, "\t|\t", ganhovec[idx])
-  # println(" | Ganho[", fvec[idx], "] = ", ganhovec[idx])
-end
-# for (idx, each_h) in enumerate(hvec)
-#   print("H[", fvec[idx], "] = ", each_h)
-#   println(" | Ganho[", fvec[idx], "] = ", ganhovec[idx])
-# end
-
-# for (idx, each_ganho) in enumerate(ganhovec)
-#   # println("Ganho[", fvec[idx], "] = ", each_ganho)
-#   println(each_ganho)
-# end
-# println(hvec)
-
-img = R * C * calc_omega(fvec[1]) * 1im - 1
+# println("freq de corte =", f_corte)
