@@ -34,21 +34,25 @@ println("running playground! \n")
 vi = 4 # vpp
 
 include("functions.jl")
-using DataFrames
-R = 3700
-C = 1e-9
+# using DataFrames
+println(init_polar(1/sqrt(2), 45))
 
-freq_array = cat(4400, 5e3:1e3:10e3, 20e3:10e3:100e3, 200e3:100e3:400e3, 440e3, dims=1)
-h_array = h_calc.(R, C, freq_array)
-gain_array = gain.(R, C, freq_array)
+ 15 * 80 / 2 * cos(
 
-df = DataFrame(Frequency=freq_array, H=h_array, Gain=gain_array)
+# R = 3700
+# C = 1e-9
 
-print(df)
+# freq_array = cat(4400, 5e3:1e3:10e3, 20e3:10e3:100e3, 200e3:100e3:400e3, 440e3, dims=1)
+# h_array = h_calc.(R, C, freq_array)
+# gain_array = gain.(R, C, freq_array)
 
-img = R * C * calc_omega(freq_array[1]) * 1im - 1
+# df = DataFrame(Frequency=freq_array, H=h_array, Gain=gain_array)
 
-freqcorte(R, C) = 1 / (R * C * 2 * pi)
-print("\n\n Cutoff frequency: ", round(freqcorte(R, C), digits=2), " Hz")
+# print(df)
+
+# img = R * C * calc_omega(freq_array[1]) * 1im - 1
+
+# freqcorte(R, C) = 1 / (R * C * 2 * pi)
+# print("\n\n Cutoff frequency: ", round(freqcorte(R, C), digits=2), " Hz")
 
 # println("freq de corte =", f_corte)
